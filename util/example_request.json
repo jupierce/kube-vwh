@@ -1,0 +1,134 @@
+{
+    "apiVersion": "admission.k8s.io/v1beta1",
+    "kind": "AdmissionReview",
+    "request": {
+        "dryRun": false,
+        "kind": {
+            "group": "",
+            "kind": "Pod",
+            "version": "v1"
+        },
+        "namespace": "default",
+        "object": {
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"annotations\":{},\"name\":\"init-demo\",\"namespace\":\"default\"},\"spec\":{\"containers\":[{\"image\":\"nginx\",\"name\":\"nginx\",\"ports\":[{\"containerPort\":80}],\"volumeMounts\":[{\"mountPath\":\"/usr/share/nginx/html\",\"name\":\"workdir\"}]}],\"dnsPolicy\":\"Default\",\"initContainers\":[{\"command\":[\"wget\",\"-O\",\"/work-dir/index.html\",\"http://kubernetes.io\"],\"image\":\"busybox\",\"name\":\"install\",\"volumeMounts\":[{\"mountPath\":\"/work-dir\",\"name\":\"workdir\"}]}],\"volumes\":[{\"emptyDir\":{},\"name\":\"workdir\"}]}}\n"
+                },
+                "creationTimestamp": "2019-01-21T20:23:24Z",
+                "name": "init-demo",
+                "namespace": "default",
+                "uid": "672a569a-1dba-11e9-a1c5-44b56a403cd6"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "nginx",
+                        "imagePullPolicy": "Always",
+                        "name": "nginx",
+                        "ports": [
+                            {
+                                "containerPort": 80,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {},
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/usr/share/nginx/html",
+                                "name": "workdir"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-gd7dk",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "Default",
+                "enableServiceLinks": true,
+                "initContainers": [
+                    {
+                        "command": [
+                            "wget",
+                            "-O",
+                            "/work-dir/index.html",
+                            "http://kubernetes.io"
+                        ],
+                        "image": "busybox",
+                        "imagePullPolicy": "Always",
+                        "name": "install",
+                        "resources": {},
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/work-dir",
+                                "name": "workdir"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "default-token-gd7dk",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "emptyDir": {},
+                        "name": "workdir"
+                    },
+                    {
+                        "name": "default-token-gd7dk",
+                        "secret": {
+                            "secretName": "default-token-gd7dk"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "phase": "Pending",
+                "qosClass": "BestEffort"
+            }
+        },
+        "oldObject": null,
+        "operation": "CREATE",
+        "resource": {
+            "group": "",
+            "resource": "pods",
+            "version": "v1"
+        },
+        "uid": "672a5ac0-1dba-11e9-a1c5-44b56a403cd6",
+        "userInfo": {
+            "groups": [
+                "system:masters",
+                "system:authenticated"
+            ],
+            "username": "minikube-user"
+        }
+    }
+}
