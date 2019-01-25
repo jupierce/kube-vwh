@@ -20,12 +20,11 @@ import (
 	"k8s.io/api/admission/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/klog"
-	// batchv1beta1 "k8s.io/api/batch/v1beta1"
-	// batchv1 "k8s.io/api/batch/v1"
+	batchv1beta1 "k8s.io/api/batch/v1beta1"
 )
 
-// deny cronjobs in non-privileged namespaces.
-func cronjobCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
+// deny configmaps with specific key-value pair.
+func routeCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 	klog.V(2).Info("admitting cronjob")
 	cronjobresource := metav1.GroupVersionResource{Group: "batch", Version: "v1beta1", Resource: "cronjobs"}
 	if ar.Request.Resource != cronjobresource {
@@ -33,32 +32,19 @@ func cronjobCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 		return nil
 	}
 
+	raw := ar.Request.Object.Raw
+	cronjob := batchv1beta1.CronJob{}
+	deserializer := codecs.UniversalDeserializer()
+	if _, _, err := deserializer.Decode(raw, nil, &cronjob); err != nil {
+		klog.Error(err)
+		return toAdmissionResponse(err)
+	}
 	reviewResponse := v1beta1.AdmissionResponse{}
 	isPriv := checkNamespace(ar.Request.Namespace)
 	reviewResponse.Allowed = isPriv
 	if !isPriv {
 		reviewResponse.Result = &metav1.Status{
 			Reason: "cronjob may not be created in this namespace.",
-		}
-	}
-	return &reviewResponse
-}
-
-// deny Jobs in non-privileged namespaces.
-func jobCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
-	klog.V(2).Info("admitting job")
-	jobresource := metav1.GroupVersionResource{Group: "batch", Version: "v1", Resource: "jobs"}
-	if ar.Request.Resource != jobresource {
-		klog.Errorf("expect resource to be %s", jobresource)
-		return nil
-	}
-
-	reviewResponse := v1beta1.AdmissionResponse{}
-	isPriv := checkNamespace(ar.Request.Namespace)
-	reviewResponse.Allowed = isPriv
-	if !isPriv {
-		reviewResponse.Result = &metav1.Status{
-			Reason: "job may not be created in this namespace.",
 		}
 	}
 	return &reviewResponse
