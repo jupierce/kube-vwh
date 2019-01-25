@@ -14,14 +14,6 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:1ba1d79f2810270045c328ae5d674321db34e3aae468eb4233883b473c5c0467"
-  name = "github.com/golang/glog"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
-
-[[projects]]
-  branch = "master"
   digest = "1:3ee90c0d94da31b442dde97c99635aaafec68d0b8a3c12ee2075c6bdabeec6bb"
   name = "github.com/google/gofuzz"
   packages = ["."]
@@ -59,6 +51,14 @@
   pruneopts = "UT"
   revision = "4b7aa43c6742a2c18fdef89dd197aaae7dac7ccd"
   version = "1.0.1"
+
+[[projects]]
+  digest = "1:d61c12c125829e459c0fd96af9de4d09c90ab1216b6a87dc07b1ee9009b37d5f"
+  name = "github.com/openshift/origin"
+  packages = ["pkg/route/apis/route"]
+  pruneopts = "UT"
+  revision = "0cbc58b117403b9d9169dbafdfac59ef104bb997"
+  version = "v3.11.0"
 
 [[projects]]
   digest = "1:645cabccbb4fa8aab25a956cbcbdf6a6845ca736b2c64e197ca7cbb9d210b939"
@@ -130,14 +130,12 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0f85bb1287619995cde0f2f49b068729eefe853b67a95119590f8088e11ecc4e"
+  digest = "1:674491c29cca14831ef842d7f813241d522063dcc619a7d648971ec174bb4da8"
   name = "k8s.io/api"
   packages = [
     "admission/v1beta1",
     "admissionregistration/v1beta1",
     "authentication/v1",
-    "batch/v1",
-    "batch/v1beta1",
     "core/v1",
   ]
   pruneopts = "UT"
@@ -145,12 +143,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:b4c7712bb02ad1889a3970f9273c3997c516054bc5e3a4e39e6fa9106b0dfe14"
+  digest = "1:129f316ae0ffeee220c21f72bfc8d90f833d506f7bdaa9343d9c90d942794ed4"
   name = "k8s.io/apimachinery"
   packages = [
     "pkg/api/resource",
+    "pkg/apis/meta/internalversion",
     "pkg/apis/meta/v1",
     "pkg/apis/meta/v1/unstructured",
+    "pkg/apis/meta/v1beta1",
     "pkg/conversion",
     "pkg/conversion/queryparams",
     "pkg/fields",
@@ -190,6 +190,14 @@
   version = "v0.1.0"
 
 [[projects]]
+  digest = "1:ea97d30b751fd9dfa1f5f034f636b95780d99526e2e18b6b03e778350d0b8a8e"
+  name = "k8s.io/kubernetes"
+  packages = ["pkg/apis/core"]
+  pruneopts = "UT"
+  revision = "cff46ab41ff0bb44d8584413b598ad8360ec1def"
+  version = "v1.13.2"
+
+[[projects]]
   digest = "1:7719608fe0b52a4ece56c2dde37bedd95b938677d1ab0f84b8a7852e4c59f849"
   name = "sigs.k8s.io/yaml"
   packages = ["."]
@@ -201,11 +209,10 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/golang/glog",
+    "github.com/openshift/origin/pkg/route/apis/route",
     "github.com/spf13/cobra",
     "k8s.io/api/admission/v1beta1",
     "k8s.io/api/admissionregistration/v1beta1",
-    "k8s.io/api/batch/v1beta1",
     "k8s.io/api/core/v1",
     "k8s.io/apimachinery/pkg/apis/meta/v1",
     "k8s.io/apimachinery/pkg/runtime",

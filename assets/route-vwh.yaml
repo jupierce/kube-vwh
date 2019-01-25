@@ -6,13 +6,14 @@ webhooks:
 - name: deny.route-custom.create
   rules:
   - apiGroups:
-    - "batch"
+    - ""
     apiVersions:
-    - v1beta1
+    - "route.openshift.io/v1"
+    # also tried just "v1" for apiVersions, no change.
     operations:
     - "CREATE"
     resources:
-    - "*/*"
+    - "*"
   # Default failurePolicy is not fail.
   failurePolicy: Fail
   clientConfig:

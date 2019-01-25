@@ -118,6 +118,10 @@ func serveCronJobCreateDeny(w http.ResponseWriter, r *http.Request) {
 	serve(w, r, cronjobCreateDeny)
 }
 
+func serveJobCreateDeny(w http.ResponseWriter, r *http.Request) {
+	serve(w, r, jobCreateDeny)
+}
+
 func Serve(certfile string, keyfile string) {
 	var config = Config{CertFile: certfile, KeyFile: keyfile}
 	flag.Parse()
