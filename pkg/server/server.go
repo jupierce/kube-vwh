@@ -114,8 +114,8 @@ func serveAlwaysDeny(w http.ResponseWriter, r *http.Request) {
 	serve(w, r, alwaysDeny)
 }
 
-func serveBatchCreateDeny(w http.ResponseWriter, r *http.Request) {
-	serve(w, r, batchCreateDeny)
+func serveCronJobCreateDeny(w http.ResponseWriter, r *http.Request) {
+	serve(w, r, cronjobCreateDeny)
 }
 
 func Serve(certfile string, keyfile string) {
@@ -123,7 +123,7 @@ func Serve(certfile string, keyfile string) {
 	flag.Parse()
 
 	http.HandleFunc("/always-deny", serveAlwaysDeny)
-	http.HandleFunc("/deny-batch-create", serveBatchCreateDeny)
+	http.HandleFunc("/deny-cronjob-create", serveCronJobCreateDeny)
 	server := &http.Server{
 		Addr:      ":443",
 		TLSConfig: configTLS(config),

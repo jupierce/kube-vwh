@@ -24,8 +24,8 @@ import (
 )
 
 // deny configmaps with specific key-value pair.
-func batchCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
-	klog.V(2).Info("admitting batchv1beta1")
+func cronjobCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
+	klog.V(2).Info("admitting cronjob")
 	cronjobresource := metav1.GroupVersionResource{Group: "batch", Version: "v1beta1", Resource: "cronjobs"}
 	if ar.Request.Resource != cronjobresource {
 		klog.Errorf("expect resource to be %s", cronjobresource)
