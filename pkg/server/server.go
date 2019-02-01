@@ -122,15 +122,16 @@ func serveJobCreateDeny(w http.ResponseWriter, r *http.Request) {
 	serve(w, r, jobCreateDeny)
 }
 
-func Serve(certfile string, keyfile string) {
+func Serve(certfile string, keyfile string, port int) {
 	var config = Config{CertFile: certfile, KeyFile: keyfile}
 	flag.Parse()
 
 	http.HandleFunc("/always-deny", serveAlwaysDeny)
 	http.HandleFunc("/deny-cronjob-create", serveCronJobCreateDeny)
 	server := &http.Server{
-		Addr:      ":443",
+		Addr:      fmt.Sprintf(":%v", port),
 		TLSConfig: configTLS(config),
 	}
+	klog.Errorf(fmt.Sprintf("starting server on %v", port))
 	server.ListenAndServeTLS("", "")
 }

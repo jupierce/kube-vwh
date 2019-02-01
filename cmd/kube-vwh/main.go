@@ -1,6 +1,7 @@
 package main
 
 import (
+  "flag"
   "github.com/spf13/cobra"
   "github.com/michaelgugino/kube-vwh/pkg/server"
   "k8s.io/klog"
@@ -14,12 +15,12 @@ var (
       Args: cobra.MinimumNArgs(0),
       Run: func(cmd *cobra.Command, args []string) {
       if startOpts.certpath == "" {
-        klog.Fatalf("node-name is required")
+        klog.Fatalf("certpath is required")
       }
       if startOpts.keypath == "" {
-        klog.Fatalf("node-name is required")
+        klog.Fatalf("keypath is required")
       }
-        server.Serve(startOpts.certpath, startOpts.keypath)
+        server.Serve(startOpts.certpath, startOpts.keypath, startOpts.port)
       },
     }
 
@@ -30,11 +31,20 @@ var (
     }
 )
 
+var rootCmd = &cobra.Command{Use: "kube-vwh"}
+
+func init() {
+	rootCmd.PersistentFlags().AddGoFlagSet(flag.CommandLine)
+}
+
 func main() {
-  var rootCmd = &cobra.Command{Use: "kube-vwh"}
+
   rootCmd.AddCommand(cmdServer)
   cmdServer.PersistentFlags().StringVar(&startOpts.certpath, "certpath", "", "Path to server cert")
   cmdServer.PersistentFlags().StringVar(&startOpts.keypath, "keypath", "", "Path to private server key")
-  cmdServer.PersistentFlags().IntVar(&startOpts.port, "port", 443, "port to listen serve requests")
+  cmdServer.PersistentFlags().IntVar(&startOpts.port, "port", 8443, "port to listen serve requests")
+  rootCmd.PersistentFlags().AddGoFlagSet(flag.CommandLine)
+  flag.Set("logtostderr", "true")
+  flag.Parse()
   rootCmd.Execute()
 }

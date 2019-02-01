@@ -6,7 +6,7 @@ webhooks:
 - name: deny.route-custom.create
   rules:
   - apiGroups:
-    - ""
+    - "route.openshift.io"
     apiVersions:
     - "route.openshift.io/v1"
     # also tried just "v1" for apiVersions, no change.
