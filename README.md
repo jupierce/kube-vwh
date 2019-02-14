@@ -15,3 +15,8 @@ minikube start \
 -v 9
 --extra-config=apiserver.enable-admission-plugins="NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,Priority,ResourceQuota"
 ```
+
+Get your CA bundle here:
+```sh
+kubectl get configmaps --namespace openshift-service-cert-signer -o yaml signing-cabundle
+```

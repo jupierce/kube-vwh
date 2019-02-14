@@ -17,6 +17,7 @@ limitations under the License.
 package server
 
 import (
+	"fmt"
 	"k8s.io/api/admission/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/klog"
@@ -26,7 +27,7 @@ import (
 
 // deny configmaps with specific key-value pair.
 func routeCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
-	klog.V(2).Info("admitting route")
+	klog.Errorf("admitting route")
 	/* unsure how to do this for route
 	cronjobresource := metav1.GroupVersionResource{Group: "batch", Version: "v1beta1", Resource: "cronjobs"}
 	if ar.Request.Resource != cronjobresource {
@@ -38,7 +39,7 @@ func routeCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 	isPriv := checkNamespace(ar.Request.Namespace)
 	reviewResponse.Allowed = true
 	if isPriv {
-		klog.V(2).Info("privileged namespace approved for route")
+		klog.Errorf("privileged namespace approved for route")
 		return &reviewResponse
 	}
 	raw := ar.Request.Object.Raw
@@ -48,6 +49,7 @@ func routeCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 		klog.Error(err)
 		return toAdmissionResponse(err)
 	}
+	klog.Errorf(fmt.Sprintf("route.Spec.Host = %v", route.Spec.Host))
 	if route.Spec.Host != "" {
 		reviewResponse.Allowed = false
 		reviewResponse.Result = &metav1.Status{

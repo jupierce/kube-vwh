@@ -1,0 +1,64 @@
+{
+    "apiVersion": "admission.k8s.io/v1beta1",
+    "kind": "AdmissionReview",
+    "request": {
+        "dryRun": false,
+        "kind": {
+            "group": "route.openshift.io",
+            "kind": "Route",
+            "version": "v1"
+        },
+        "namespace": "development",
+        "object": {
+            "metadata": {
+                "annotations": {
+                    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"route.openshift.io/v1\",\"kind\":\"Route\",\"metadata\":{\"annotations\":{},\"labels\":{\"component\":\"support\",\"logging-infra\":\"support\",\"provider\":\"openshift\"},\"name\":\"logging-kibana\",\"namespace\":\"development\"},\"spec\":{\"host\":\"customhost.example.openshift.com\",\"tls\":{\"caCertificate\":\"-----BEGIN CERTIFICATE-----\\n...\\n-----END CERTIFICATE-----\\n\",\"certificate\":\"-----BEGIN CERTIFICATE-----\\n...\\n-----END CERTIFICATE-----\\n\",\"destinationCACertificate\":\"-----BEGIN CERTIFICATE-----\\n...\\n-----END CERTIFICATE-----\\n\",\"insecureEdgeTerminationPolicy\":\"Redirect\",\"key\":\"-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n\",\"termination\":\"reencrypt\"},\"to\":{\"kind\":\"Service\",\"name\":\"logging-kibana\",\"weight\":100},\"wildcardPolicy\":\"None\"}}\n"
+                },
+                "creationTimestamp": "2019-02-13T22:24:02Z",
+                "labels": {
+                    "component": "support",
+                    "logging-infra": "support",
+                    "provider": "openshift"
+                },
+                "name": "logging-kibana",
+                "namespace": "development",
+                "uid": "10ccc38b-2fde-11e9-aa03-0a580a82009d"
+            },
+            "spec": {
+                "host": "customhost.example.openshift.com",
+                "tls": {
+                    "caCertificate": "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----\n",
+                    "certificate": "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----\n",
+                    "destinationCACertificate": "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----\n",
+                    "insecureEdgeTerminationPolicy": "Redirect",
+                    "key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
+                    "termination": "reencrypt"
+                },
+                "to": {
+                    "kind": "Service",
+                    "name": "logging-kibana",
+                    "weight": 100
+                },
+                "wildcardPolicy": "None"
+            },
+            "status": {
+                "ingress": null
+            }
+        },
+        "oldObject": null,
+        "operation": "CREATE",
+        "resource": {
+            "group": "route.openshift.io",
+            "resource": "routes",
+            "version": "v1"
+        },
+        "uid": "10cd25b2-2fde-11e9-aa03-0a580a82009d",
+        "userInfo": {
+            "groups": [
+                "system:masters",
+                "system:authenticated"
+            ],
+            "username": "system:admin"
+        }
+    }
+}
