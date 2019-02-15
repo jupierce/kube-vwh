@@ -1,5 +1,5 @@
 /*
-Copyright 2018 The Kubernetes Authors.
+Copyright 2019 Red Hat, Inc. and/or its affiliates
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,23 +18,22 @@ package server
 
 import (
 	"fmt"
+	"encoding/json"
 	"k8s.io/api/admission/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/klog"
-	//batchv1beta1 "k8s.io/api/batch/v1beta1"
 	routeapi "github.com/openshift/origin/pkg/route/apis/route"
 )
 
-// deny configmaps with specific key-value pair.
+
 func routeCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 	klog.Errorf("admitting route")
-	/* unsure how to do this for route
-	cronjobresource := metav1.GroupVersionResource{Group: "batch", Version: "v1beta1", Resource: "cronjobs"}
-	if ar.Request.Resource != cronjobresource {
-		klog.Errorf("expect resource to be %s", cronjobresource)
+
+	routeresource := metav1.GroupVersionResource{Group: "route.openshift.io", Version: "v1", Resource: "routes"}
+	if ar.Request.Resource != routeresource {
+		klog.Errorf("expect resource to be %s, found %v", routeresource, ar.Request.Resource)
 		return nil
 	}
-	*/
 	reviewResponse := v1beta1.AdmissionResponse{}
 	isPriv := checkNamespace(ar.Request.Namespace)
 	reviewResponse.Allowed = true
@@ -44,8 +43,8 @@ func routeCreateDeny(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 	}
 	raw := ar.Request.Object.Raw
 	route := routeapi.Route{}
-	deserializer := codecs.UniversalDeserializer()
-	if _, _, err := deserializer.Decode(raw, nil, &route); err != nil {
+	err := json.Unmarshal(raw, &route)
+	if err != nil {
 		klog.Error(err)
 		return toAdmissionResponse(err)
 	}

@@ -20,3 +20,11 @@ Get your CA bundle here:
 ```sh
 kubectl get configmaps --namespace openshift-service-cert-signer -o yaml signing-cabundle
 ```
+
+# Import references
+
+https://docs.okd.io/latest/architecture/additional_concepts/dynamic_admission_controllers.html
+
+https://docs.okd.io/latest/dev_guide/secrets.html#service-serving-certificate-secrets
+
+Good overview: https://banzaicloud.com/blog/k8s-admission-webhooks/
