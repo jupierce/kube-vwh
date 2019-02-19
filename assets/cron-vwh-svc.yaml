@@ -1,0 +1,23 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: deny-cron-create
+webhooks:
+- name: deny.cron.create
+  rules:
+  - apiGroups:
+    - "batch"
+    apiVersions:
+    - v1beta1
+    operations:
+    - "CREATE"
+    resources:
+    - cronjobs
+  # Default failurePolicy is not fail.
+  failurePolicy: Fail
+  clientConfig:
+    service:
+      namespace: default
+      name: kube-vwh-service
+      path: /deny-cronjob-create
+    caBundle: # base64 encoded CA of the cert used in the pod.
